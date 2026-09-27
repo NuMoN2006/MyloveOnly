@@ -82,10 +82,10 @@ noButton.addEventListener("pointerenter", () => {
 	noButton.style.top = `${100 + Math.random() * (maxTop - 100)}px`;
 });
 
-// Функция для отправки уведомления в Cloudflare Worker
+// Функция для отправки уведомления в Cloudflare Worker с правильным адресом
 async function sendAnswer(answerText) {
     try {
-        await fetch("https://mylove-telegram.numon2006.workers.dev", {
+        await fetch("https://mylove-telegram.numon-ishmatov2006.workers.dev", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
