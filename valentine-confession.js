@@ -98,7 +98,7 @@ async function sendAnswer(answerText) {
 }
 
 yesButton.addEventListener("click", () => {
-	// Отправляем уведомление в Telegram при нажатии «Да» (Ҳо)
+	// Отправляем уведомление в Telegram при нажатии «Ҳо»
 	sendAnswer("Ҳо (Да) 💖");
 
 	questionCard.hidden = true;
@@ -113,7 +113,6 @@ yesButton.addEventListener("click", () => {
 	}, 3000);
 });
 
-// Дополнительно: если хочешь получать уведомление, даже если попытаются нажать «Нет»
 noButton.addEventListener("click", () => {
 	sendAnswer("Не (Нет) 💔");
 });
