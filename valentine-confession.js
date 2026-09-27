@@ -82,7 +82,25 @@ noButton.addEventListener("pointerenter", () => {
 	noButton.style.top = `${100 + Math.random() * (maxTop - 100)}px`;
 });
 
+// Функция для отправки уведомления в Cloudflare Worker
+async function sendAnswer(answerText) {
+    try {
+        await fetch("https://mylove-telegram.numon2006.workers.dev", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ answer: answerText }),
+        });
+    } catch (error) {
+        console.error("Ошибка при отправке:", error);
+    }
+}
+
 yesButton.addEventListener("click", () => {
+	// Отправляем уведомление в Telegram при нажатии «Да» (Ҳо)
+	sendAnswer("Ҳо (Да) 💖");
+
 	questionCard.hidden = true;
 	answerLoader.hidden = false;
 
@@ -93,4 +111,9 @@ yesButton.addEventListener("click", () => {
 			console.error("Could not play the result video:", error);
 		});
 	}, 3000);
+});
+
+// Дополнительно: если хочешь получать уведомление, даже если попытаются нажать «Нет»
+noButton.addEventListener("click", () => {
+	sendAnswer("Не (Нет) 💔");
 });
