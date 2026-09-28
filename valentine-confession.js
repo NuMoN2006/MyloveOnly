@@ -34,30 +34,20 @@ messageState.addEventListener("change", () => {
 	message.classList.remove("openNor", "closeNor");
 
 	if (messageState.checked) {
-
-		// Убираем подсказку "кликни на сердечко"
 		instruction.classList.add("is-hidden");
-
 		message.classList.remove("closed", "no-anim");
 		message.classList.add("openNor");
-
 		heart.classList.remove("closeHer", "openedHer", "no-anim");
 		heart.classList.add("openHer");
-
 		mainContainer.style.backgroundColor = "#f48fb1";
-
 		return;
 	}
 
-	// Возвращаем подсказку
 	instruction.classList.remove("is-hidden");
-
 	message.classList.remove("no-anim");
 	message.classList.add("closeNor");
-
 	heart.classList.remove("openHer", "openedHer");
 	heart.classList.add("closeHer");
-
 	mainContainer.style.backgroundColor = "#fce4ec";
 });
 
@@ -67,7 +57,6 @@ messageState.addEventListener("change", () => {
 ========================= */
 
 message.addEventListener("animationend", () => {
-
 	if (message.classList.contains("closeNor")) {
 		message.classList.add("closed");
 	}
@@ -82,14 +71,10 @@ message.addEventListener("animationend", () => {
 ========================= */
 
 heart.addEventListener("animationend", () => {
-
 	if (heart.classList.contains("closeHer")) {
-
 		heart.classList.add("no-anim");
 		heart.classList.remove("beating");
-
 	} else {
-
 		heart.classList.add("openedHer", "beating");
 	}
 
@@ -102,7 +87,6 @@ heart.addEventListener("animationend", () => {
 ========================= */
 
 function resetQuestion() {
-
 	clearTimeout(answerTimeout);
 
 	questionCard.hidden = false;
@@ -122,11 +106,8 @@ function resetQuestion() {
 ========================= */
 
 questionButton.addEventListener("click", () => {
-
 	resetQuestion();
-
 	questionProject.hidden = false;
-
 	yesButton.focus();
 });
 
@@ -136,7 +117,6 @@ questionButton.addEventListener("click", () => {
 ========================= */
 
 questionBack.addEventListener("click", () => {
-
 	questionProject.hidden = true;
 });
 
@@ -146,7 +126,6 @@ questionBack.addEventListener("click", () => {
 ========================= */
 
 noButton.addEventListener("pointerenter", () => {
-
 	const bounds = questionCard.getBoundingClientRect();
 
 	const maxLeft = Math.max(
@@ -177,17 +156,12 @@ const WORKER_URL =
 
 
 async function sendAnswer(answerText) {
-
 	try {
-
 		const response = await fetch(WORKER_URL, {
-
 			method: "POST",
-
 			headers: {
 				"Content-Type": "application/json"
 			},
-
 			body: JSON.stringify({
 				answer: answerText
 			})
@@ -202,7 +176,6 @@ async function sendAnswer(answerText) {
 		console.log("Ответ успешно отправлен:", answerText);
 
 	} catch (error) {
-
 		console.error(
 			"Ошибка при отправке ответа:",
 			error
@@ -216,32 +189,22 @@ async function sendAnswer(answerText) {
 ========================= */
 
 yesButton.addEventListener("click", () => {
-
 	// Отправляем ответ в Telegram
 	sendAnswer("Ҳо (Да) 💖");
 
-	// Скрываем вопрос
 	questionCard.hidden = true;
-
-	// Показываем загрузку
 	answerLoader.hidden = false;
 
-	// Через 3 секунды показываем результат
 	answerTimeout = setTimeout(() => {
-
 		answerLoader.hidden = true;
-
 		answerResult.hidden = false;
 
 		resultVideo.play().catch((error) => {
-
 			console.error(
 				"Could not play the result video:",
 				error
 			);
-
 		});
-
 	}, 3000);
 });
 
@@ -251,8 +214,6 @@ yesButton.addEventListener("click", () => {
 ========================= */
 
 noButton.addEventListener("click", () => {
-
 	// Отправляем ответ в Telegram
 	sendAnswer("Не (Нет) 💔");
-
 });
