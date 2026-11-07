@@ -24,21 +24,56 @@ let answerTimeout;
    ФОНОВАЯ МУЗЫКА
 ========================= */
 
+let musicStarted = false;
+
 function playBackgroundMusic() {
-	if (!backgroundMusic || !backgroundMusic.paused) {
+	if (!backgroundMusic || musicStarted && !backgroundMusic.paused) {
 		return;
 	}
 
-	backgroundMusic.play().catch(() => {
-		// Browsers may require a user gesture.
+	const playPromise = backgroundMusic.play();
+
+	if (playPromise !== undefined) {
+		playPromise
+			.then(() => {
+				musicStarted = true;
+				removeMusicGestureListeners();
+			})
+			.catch(() => {
+				musicStarted = false;
+			});
+	} else if (!backgroundMusic.paused) {
+		musicStarted = true;
+		removeMusicGestureListeners();
+	}
+}
+
+function removeMusicGestureListeners() {
+	["pointerdown", "touchstart", "touchend", "mousedown"].forEach((eventName) => {
+		document.removeEventListener(eventName, playBackgroundMusic, true);
 	});
 }
 
-playBackgroundMusic();
-
-["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
-	document.addEventListener(eventName, playBackgroundMusic, { once: true });
+["pointerdown", "touchstart", "touchend", "mousedown"].forEach((eventName) => {
+	document.addEventListener(eventName, playBackgroundMusic, {
+		passive: true,
+		capture: true
+	});
 });
+
+if (backgroundMusic) {
+	backgroundMusic.loop = true;
+	backgroundMusic.preload = "auto";
+	backgroundMusic.addEventListener("ended", playBackgroundMusic);
+	document.addEventListener("visibilitychange", () => {
+		if (!document.hidden) {
+			playBackgroundMusic();
+		}
+	});
+	window.addEventListener("pageshow", playBackgroundMusic);
+}
+
+playBackgroundMusic();
 
 
 /* =========================
