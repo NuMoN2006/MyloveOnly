@@ -15,8 +15,30 @@ const noButton = document.getElementById("noButton");
 const answerLoader = document.getElementById("answerLoader");
 const answerResult = document.getElementById("answerResult");
 const resultVideo = document.getElementById("resultVideo");
+const backgroundMusic = document.getElementById("backgroundMusic");
 
 let answerTimeout;
+
+
+/* =========================
+   ФОНОВАЯ МУЗЫКА
+========================= */
+
+function playBackgroundMusic() {
+	if (!backgroundMusic || !backgroundMusic.paused) {
+		return;
+	}
+
+	backgroundMusic.play().catch(() => {
+		// Browsers may require a user gesture.
+	});
+}
+
+playBackgroundMusic();
+
+["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
+	document.addEventListener(eventName, playBackgroundMusic, { once: true });
+});
 
 
 /* =========================
